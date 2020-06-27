@@ -10,7 +10,7 @@
     "prettier:js": "prettier --write '{edb,test}/*/src/**/*.{js,mjs}' 'test/src/**/*.{js,mjs}' --ignore-path .prettierignore",
     "prettier:json": "prettier --write '{edb,test}/*/package.json' 'package.json'",
     "export": "npm run build && npm run export:copy",
-    "export:copy": "cp edb/dist/index.js ../websites-monorepo/deps/edb/index.js && cp edb/dist/index.js.map ../websites-monorepo/deps/edb/index.js.map",
+    "export:copy": "cp edb/dist/index.js ../websites-monorepo/deps/edb-models/index.js && cp edb/dist/index.js.map ../websites-monorepo/deps/edb-models/index.js.map",
     "clean": "npm run clean:lerna && npm run clean:npm",
     "clean:lerna": "lerna clean",
     "clean:npm": "npm run clean:npm:unlock && npm run clean:npm:uninstall",
