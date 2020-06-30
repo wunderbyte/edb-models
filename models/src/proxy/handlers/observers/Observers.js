@@ -295,6 +295,7 @@ function gopeek([props, target]) {
 function gopoke([props, target]) {
 	const proxy = getProxy(target);
 	const poke = (observer, isglobal) => {
+		// TODO: harmonize the order of arguments in these two callback scenarios
 		switch (typeof observer) {
 			case 'object':
 				if (observer.onpoke) {
