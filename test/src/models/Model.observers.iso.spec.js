@@ -65,6 +65,46 @@ export default function () {
 			});
 		});
 
+		it('should support simple function callbacks as observers', (done) => {
+			let model = new MyModel({ age: 23 });
+			let works = true;
+			const cleanup = model.observe((name, value, oldval, target) => {
+				works =
+					name === 'age' && value === 24 && oldval === 23 && target === model;
+			});
+			model.age = 24;
+			later(() => {
+				expect(works).toBe(true);
+				cleanup();
+				model.age = 25;
+				later(() => {
+					expect(works).toBe(true);
+					done();
+				});
+			});
+		});
+
+		it('should support observing single properties', (done) => {
+			let model = new MyModel({ age: 23 });
+			let works = true;
+			const cleanup = model.observe('age', (value, oldval, target) => {
+				works = value === 24 && oldval === 23 && target === model;
+			});
+			model.name = 'Hans Jozef';
+			later(() => {
+				model.age = 24;
+				later(() => {
+					expect(works).toBe(true);
+					cleanup();
+					model.age = 25;
+					later(() => {
+						expect(works).toBe(true);
+						done();
+					});
+				});
+			});
+		});
+
 		/**
 		 * IDEA: If the prop has a setter, try setting it and note what private prop
 		 * changed. Then invoke the getter to see if it matches. Then finally *reset*

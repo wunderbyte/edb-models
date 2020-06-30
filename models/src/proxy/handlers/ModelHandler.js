@@ -6,11 +6,12 @@ import getObjectPipe from './pipes/ObjectPipe';
 /*
  * Reserved and special field names.
  */
-const [CONSTRUCTOR, CONSTRUCTED, ADD, REMOVE, DISPOSE, DISPOSED] = [
+const [CONSTRUCTOR, CONSTRUCTED, ADD, REMOVE, OBSERVE, DISPOSE, DISPOSED] = [
 	'constructor',
 	'constructed',
 	'addObserver',
 	'removeObserver',
+	'observe',
 	'dispose', // TODO: Deprecate
 	'disposed', // TODO: Deprecate
 ];
@@ -116,6 +117,8 @@ function special(target, name) {
 			return (observer) => Observers.add(target, observer);
 		case REMOVE:
 			return (observer) => Observers.remove(target, observer);
+		case OBSERVE:
+			return (...args) => Observers.observe(target, ...args);
 		case DISPOSE:
 			return () => Target.dispose(target);
 		case DISPOSED:

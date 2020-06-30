@@ -1,8 +1,8 @@
 {
-	"name": "@edb/test",
-	"version": "0.0.1",
-	"dependencies": {
-		"@edb/models": "0.0.0",
-		"@edb/utils": "0.0.0"
-	}
+  "name": "@edb/test",
+  "version": "0.0.1",
+  "dependencies": {
+    "@edb/models": "0.0.0",
+    "@edb/utils": "0.0.0"
+  }
 }

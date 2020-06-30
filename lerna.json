@@ -1,8 +1,8 @@
 {
 	"version": "0.0.0",
 	"packages": [
-		"edb/*",
-		"utils/*",
+		"models",
+		"utils",
 		"test"
 	]
 }

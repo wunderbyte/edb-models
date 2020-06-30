@@ -8,12 +8,7 @@ import { AccessError, isString, isSymbol } from '@edb/utils';
 /**
  * Reserved field names.
  */
-const [ADD, REMOVE, OBSERVE, UNOBSERVE] = [
-	'addObserver',
-	'removeObserver',
-	'observe',
-	'unobserve',
-];
+const [ADD, REMOVE, OBSERVE] = ['addObserver', 'removeObserver', 'observe'];
 
 /**
  * Confirm that object as constructor argument only
@@ -161,7 +156,6 @@ function reserved(name) {
 		case ADD:
 		case REMOVE:
 		case OBSERVE:
-		case UNOBSERVE:
 			return true;
 	}
 	return false;

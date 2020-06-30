@@ -11,7 +11,7 @@ if (Environment.browser) {
 }
 
 /**
- * TODO: How to expose this?
+ * TODO: Expose this via static method `Model.addObserver` !!!
  * @param {Observer} obs - TODO: Define `Observer` interface somewhere
  */
 export function addGlobalObserver(obs) {
@@ -19,7 +19,7 @@ export function addGlobalObserver(obs) {
 }
 
 /**
- * TODO: How to expose this?
+ * TODO: Expose this via static method `Model.addObserver` !!!
  * @param {Observer} obs
  */
 export function removeGlobalObserver(obs) {

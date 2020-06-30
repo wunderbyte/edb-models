@@ -4,7 +4,7 @@ import { isConstructed, getProxy } from '../../target/Target';
 
 /**
  * Mapping target to observers.
- * @type {Map<Set<IObserver>>}
+ * @type {Map<Set<IObserver|Function>>}
  */
 const locals = new WeakMap();
 
@@ -50,10 +50,15 @@ let peeking = true;
  * Observers management studio.
  */
 export default class Observers {
+	static observe() {}
+
+	static unobserve() {}
+
 	/**
 	 * Add observer for target.
 	 * @param {Proto} target
 	 * @param {IObserver} [observer]
+	 * @returns {Function}
 	 */
 	static add(target, observer = target) {
 		let set = locals.get(target);
@@ -62,6 +67,7 @@ export default class Observers {
 				locals.set(target, (set = new Set()));
 			}
 			set.add(observer);
+			return () => Observers.remove(target, observer);
 		} else {
 			observererror(target);
 		}
@@ -70,17 +76,45 @@ export default class Observers {
 	/**
 	 * Remove observer for target.
 	 * @param {Proto} target
-	 * @param {IObserver} [observer]
+	 * @param {IObserver|Function} [observer]
 	 */
 	static remove(target, observer = target) {
 		let set = locals.get(target);
 		if (observable(target)) {
 			if (set) {
 				set.delete(observer);
-				if (!set.size) {
-					locals.delete(target);
-				}
+				!set.size && locals.delete(target);
 			}
+		} else {
+			observererror(target);
+		}
+	}
+
+	/**
+	 * Add callback for target.
+	 * @param {Proto} target
+	 * @param {Function|string} first
+	 * @param {Function|undefined} last
+	 * @returns {Function}
+	 */
+	static observe(target, first, last) {
+		let set = locals.get(target);
+		let fun = typeof first === 'string' ? last : last;
+		let nam = typeof first === 'string' ? first : null;
+		if (observable(target)) {
+			nam &&
+				(fun = (name, newval, oldval, target) => {
+					// TODO: `this` pointer
+					name === nam && fun(newval, oldval, target);
+				});
+			if (!set) {
+				locals.set(target, (set = new Set()));
+			}
+			set.add(fun);
+			return () => {
+				set.delete(fun);
+				!set.size && locals.delete(target);
+			};
 		} else {
 			observererror(target);
 		}
@@ -261,12 +295,23 @@ function gopeek([props, target]) {
 function gopoke([props, target]) {
 	const proxy = getProxy(target);
 	const poke = (observer, isglobal) => {
-		if (observer.onpoke) {
-			props.forEach((values, name) => {
-				if (isglobal || ispublic(name)) {
-					observer.onpoke(proxy, name, values[0], values[1]);
+		switch (typeof observer) {
+			case 'object':
+				if (observer.onpoke) {
+					props.forEach(([newval, oldval], name) => {
+						if (isglobal || ispublic(name)) {
+							observer.onpoke(proxy, name, newval, oldval);
+						}
+					});
 				}
-			});
+				break;
+			case 'function':
+				props.forEach(([newval, oldval], name) => {
+					if (isglobal || ispublic(name)) {
+						observer(name, newval, oldval, proxy);
+					}
+				});
+				break;
 		}
 	};
 	globals.forEach((observer) => poke(observer, true));
