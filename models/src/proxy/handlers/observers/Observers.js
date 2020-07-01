@@ -102,10 +102,11 @@ export default class Observers {
 		let fun = typeof first === 'string' ? last : last;
 		let nam = typeof first === 'string' ? first : null;
 		if (observable(target)) {
+			const old = fun;
+			// TODO: Think about the `this` pointer here
 			nam &&
 				(fun = (name, newval, oldval, target) => {
-					// TODO: `this` pointer
-					name === nam && fun(newval, oldval, target);
+					name === nam && old(newval, oldval, target);
 				});
 			if (!set) {
 				locals.set(target, (set = new Set()));

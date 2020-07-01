@@ -98,6 +98,7 @@ export default class Collection extends Proto(class extends Array {}) {
 
 	/**
 	 * Identification for ducks: Identify as Model.
+	 * TODO: Use Symbol
 	 * @type {boolean}
 	 */
 	static get isModelConstructor() {
@@ -106,6 +107,7 @@ export default class Collection extends Proto(class extends Array {}) {
 
 	/**
 	 * Identification for ducks: Identify as Collection.
+	 * TODO: Use Symbol
 	 * @type {boolean}
 	 */
 	static get isCollectionConstructor() {

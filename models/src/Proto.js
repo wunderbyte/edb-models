@@ -45,7 +45,7 @@ export default function mixin(superclass = class {}) {
 
 		/**
 		 * Output this instance.
-		 * @param {string|Symbol} [scope]
+		 * @param {undefined|string|Symbol} [scope]
 		 * @returns {this}
 		 */
 		@chained
@@ -55,7 +55,7 @@ export default function mixin(superclass = class {}) {
 
 		/**
 		 * Revoke this instance.
-		 * @param {string|Symbol} [scope]
+		 * @param {undefined|string|Symbol} [scope]
 		 * @returns {this}
 		 */
 		@chained
@@ -99,13 +99,23 @@ export default function mixin(superclass = class {}) {
 		}
 
 		/**
-		 * TODO: confirm interface.
-		 * @param {InputHandler} handler
-		 * @returns {Constructor}
+		 * TODO: Move this business login into {Output}
+		 * @param {InputHandler|undefined} [handler]
+		 * @returns {Constructor|Promise<Proto>}
 		 */
 		@chained
 		static connect(handler) {
-			Output.connect(this, handler);
+			return arguments.length
+				? Output.connect(this, handler)
+				: new Promise((resolve) => {
+						Output.connect(
+							this,
+							function once(input) {
+								Output.disconnect(this, once);
+								resolve(input);
+							}.bind(this)
+						);
+				  });
 		}
 
 		/**
@@ -120,6 +130,7 @@ export default function mixin(superclass = class {}) {
 
 		/**
 		 * Identification.
+		 * TODO: Don't do this
 		 * @type {String}
 		 */
 		static get [Symbol.toStringTag]() {
@@ -128,6 +139,7 @@ export default function mixin(superclass = class {}) {
 
 		/**
 		 * Because the above doesn't seem to work.
+		 * TODO: Don't do this
 		 * @returns {String}
 		 */
 		static toString() {
@@ -136,6 +148,7 @@ export default function mixin(superclass = class {}) {
 
 		/**
 		 * Identification for ducks.
+		 * TODO: Use Symbol
 		 * @type {boolean}
 		 */
 		static get isProtoConstructor() {

@@ -22,12 +22,13 @@ export function output(model, key = pubkey) {
 	outscope.set(C, model);
 	if (handlers.has(C)) {
 		handlers.get(C).forEach((handler) => {
-			handler.oninput(model);
+			handler.oninput ? handler.oninput(model) : handler(model);
 		});
 	}
 }
 
 /**
+ * TODO: Figure this out for function callback handlers!
  * TODO: This methods needs some work.
  * TODO: Make revoke work with function callbacks.
  * @param {Model} model
@@ -48,7 +49,7 @@ export function revoke(model, key = pubkey) {
 
 /**
  * @param {Constructor} C
- * @param {InputHandler} handler
+ * @param {InputHandler|Function} handler
  * @param {string|Symbol} [key]
  */
 export function connect(C, handler, key = pubkey) {
@@ -56,7 +57,8 @@ export function connect(C, handler, key = pubkey) {
 	if (!handlers.has(C, handler)) {
 		handlers.add(C, handler);
 		if (outscope.has(C)) {
-			handler.oninput(outscope.get(C));
+			const arg = outscope.get(C);
+			handler.oninput ? handler.oninput(arg) : handler(arg);
 		}
 	}
 }

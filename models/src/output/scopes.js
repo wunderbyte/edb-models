@@ -3,6 +3,7 @@ import { Mapping } from '@edb/utils';
 /**
  * Mapping all scopes by key.
  * TODO: Unref scope with no output or handlers.
+ * TODO: Perhaps just deprecate scopes entirely!
  * @type {Map<string|Symbol, Scope>}
  */
 const scopes = new Map();

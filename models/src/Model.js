@@ -62,6 +62,7 @@ export default class Model extends Proto() {
 
 	/**
 	 * Identification for ducks.
+	 * TODO: Use Symbol
 	 * @type {boolean}
 	 */
 	static get isModelConstructor() {
