@@ -5,6 +5,7 @@ import getObjectPipe from './pipes/ObjectPipe';
 
 /*
  * Reserved and special field names.
+ * TODO: Shouldn't there be an `unobserve`???
  */
 const [CONSTRUCTOR, CONSTRUCTED, ADD, REMOVE, OBSERVE, DISPOSE, DISPOSED] = [
 	'constructor',
