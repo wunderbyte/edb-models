@@ -1,4 +1,4 @@
-import { AccessError, isString, isSymbol } from '@edb/utils';
+import { isString, isSymbol } from '@edb/utils';
 
 /**
  * @filedesc
@@ -48,7 +48,7 @@ export function isReserved(name) {
  * TODO: report `getOwnPropertySymbols`.
  * @param {Proto} target
  * @param {Object} object
- * @throws {AccessError}
+ * @throws {Error}
  */
 export function badConstructor(target, object) {
 	const props = Object.keys(object);
@@ -59,7 +59,7 @@ export function badConstructor(target, object) {
  * Value denied.
  * @param {Proto|string} target
  * @param {string} name
- * @throws {AccessError}
+ * @throws {Error}
  */
 export function badValue(target, name) {
 	bad(`Cannot assign to ${signature(target, name)}`);
@@ -69,7 +69,7 @@ export function badValue(target, name) {
  * Getter denied.
  * @param {Proto} target
  * @param {string} name
- * @throws {AccessError}
+ * @throws {Error}
  */
 export function badGetter(target, name) {
 	bad(`Getting a property that only has a setter: ${signature(target, name)}`);
@@ -79,7 +79,7 @@ export function badGetter(target, name) {
  * Setter denied.
  * @param {Proto} target
  * @param {string} name
- * @throws {AccessError}
+ * @throws {Error}
  */
 export function badSetter(target, name) {
 	bad(`Setting a property that only has a getter: ${signature(target, name)}`);
@@ -89,7 +89,7 @@ export function badSetter(target, name) {
  * `definePropery` denied.
  * @param {Proto} target
  * @param {string} name
- * @throws {AccessError}
+ * @throws {Error}
  */
 export function badDefine(target, name) {
 	bad(`Cannot redefine ${signature(target, name)}`);
@@ -99,7 +99,7 @@ export function badDefine(target, name) {
  * TODO: More elaborate error message.
  * @param {string} cname
  * @param {string} name
- * @throws {AccessError}
+ * @throws {Error}
  */
 export function reportDestructedViolation(cname, name) {
 	bad(`Attempt to access "${name}" on destructed ${cname}`);
@@ -122,10 +122,10 @@ function signature(target, name) {
 /**
  * Throw that access error.
  * @param {string} message
- * @throws {AccessError}
+ * @throws {Error}
  */
 function bad(message) {
-	throw new AccessError(message);
+	throw new Error(message);
 }
 
 /**

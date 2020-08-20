@@ -1,5 +1,4 @@
 import { requestTick, cancelTick } from '@edb/utils';
-import { UnsupportedError } from '@edb/utils';
 import { isConstructed, getProxy } from '../../target/Target';
 
 /**
@@ -390,7 +389,5 @@ function notsymbol(name) {
  */
 function observererror(target) {
 	const classname = target.constructor.name;
-	throw new UnsupportedError(
-		`The ${classname} is unfortunately not observable.`
-	);
+	throw new Error(`The ${classname} is unfortunately not observable.`);
 }

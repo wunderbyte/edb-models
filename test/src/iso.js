@@ -1,5 +1,5 @@
 import key from './util/Key.iso.spec';
-import mapping from './util/Mapping.iso.spec';
+import mapping from './util/MapSet.iso.spec';
 // import type from './util/Type.iso.spec';
 import model from './models/Model.iso.spec';
 import model_proxy from './models/Model.proxy.iso.spec';

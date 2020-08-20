@@ -17,37 +17,6 @@ const stringify = Object.prototype.toString;
 export const typeOf = (any) => stringify.call(any).match(TYPE)[1].toLowerCase();
 
 /**
- * Is object defined?
- * TODO: unlimited arguments support
- * TODO: See note on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
- * @param {*} any
- * @returns {boolean}
- */
-export const isDefined = (any) => any !== undefined;
-
-/**
- * Is complex type?
- * @param {*} any
- * @returns {boolean}
- */
-export const isComplex = (any) => {
-	switch (any) {
-		case undefined:
-		case null:
-		case true:
-		case false:
-			return false;
-	}
-	switch (typeof any) {
-		case 'string':
-		case 'symbol':
-		case 'number':
-			return false;
-	}
-	return true;
-};
-
-/**
  * @param {*} any
  * @returns {boolean}
  */
@@ -98,84 +67,7 @@ export const isDate = (any) => typeof any === 'object' && any instanceof Date;
  * @param {*} any
  * @returns {boolean}
  */
-export const isNull = (any) => any === null;
-
-/**
- * @param {*} any
- * @returns {boolean}
- */
-export const isArguments = (any) => typeOf(any) === 'arguments';
-
-/**
- * @param {*} any
- * @returns {boolean}
- */
 export const isSymbol = (any) => typeof any === 'symbol';
-
-/**
- * @param {*} any
- * @returns {boolean}
- */
-export const isFile = (any) => typeOf(any) === 'file';
-
-/**
- * Is Window object?
- * @param {*} any
- * @returns {boolean}
- */
-export const isWindow = (any) => {
-	return !!(
-		any &&
-		any.document &&
-		any.location &&
-		any.alert &&
-		any.setInterval
-	);
-};
-
-/**
- * Is Event object?
- * @param {*} any
- * @returns {boolean}
- */
-export const isEvent = (any) => !!(typeOf(any).endsWith('event') && any.type);
-
-/**
- * Is node?
- * @param {*} any
- * @returns {boolean}
- */
-export const isNode = (any) =>
-	!!(
-		any &&
-		typeof any === 'object' &&
-		any.nodeType &&
-		any.compareDocumentPosition
-	);
-
-/**
- * Is DOM element?
- * @param {*} any
- * @returns {boolean}
- */
-export const isElement = (any) =>
-	isNode(any) && any.nodeType === Node.ELEMENT_NODE;
-
-/**
- * Is DocumentFragment?
- * @param {*} any
- * @returns {boolean}
- */
-export const isDocumentFragment = (any) =>
-	isNode(any) && any.nodeType === Node.DOCUMENT_FRAGMENT_NODE;
-
-/**
- * Is Document?
- * @param {*} any
- * @returns {boolean}
- */
-export const isDocument = (any) =>
-	isNode(any) && any.nodeType === Node.DOCUMENT_NODE;
 
 /**
  * NOTE: As long as this only works on {Proto}, it doesn't belong in here!!!
@@ -186,24 +78,6 @@ export const isDocument = (any) =>
  */
 export const isClass = (any) =>
 	any && typeof any === 'function' ? /^\[class /.test(any.toString()) : false;
-
-/*
-function isFunction(funcOrClass) {
-	const propertyNames = Object.getOwnPropertyNames(funcOrClass);
-	return (!propertyNames.includes('prototype') || propertyNames.includes('arguments'));
-}
-console.log('class isFunction?', isFunction(class A {}));
-console.log('function isFunction?', isFunction(function() {}));
-console.log('async function isFunction?', isFunction(async function() {}));
-console.log('arrow function isFunction?', isFunction(() => {}));
-*/
-
-/**
- * Something appears to be something array-like?
- * @param {*} any
- * @returns {boolean}
- */
-export const isArrayLike = (any) => any && '0' in any && !isArray(any);
 
 /**
  * Autocast string to an inferred type. '123' will

@@ -1,5 +1,5 @@
 import { getscope } from './scopes';
-import { Environment } from '@edb/utils';
+import { isBrowser } from '@edb/utils';
 
 /**
  * @filedesc
@@ -93,7 +93,7 @@ export function get(C, key = pubkey) {
  * @returns {Class<Model>}
  */
 export function timestamp(C) {
-	const now = Environment.isBrowser ? performance.now() : Date.now();
+	const now = isBrowser ? performance.now() : Date.now();
 	C[Symbol.for('@edb/timestamp')] = now;
 	return C;
 }

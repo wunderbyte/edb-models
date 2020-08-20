@@ -1,14 +1,15 @@
 import installdevtools from './devtools/';
 import { observe } from './proxy/ProxyFactory';
-import { Environment } from '@edb/utils';
+import { isBrowser } from '@edb/utils';
 
 export { default as Tree } from './Tree';
 export { default as Model } from './Model';
 export { default as Collection } from './Collection';
 
-if (Environment.browser) {
-	installdevtools();
-}
+/**
+ * Model devtools formatting may need a configuration switch to work.
+ */
+isBrowser && installdevtools();
 
 /**
  * TODO: Expose this via static method `Model.addObserver` !!!

@@ -1,12 +1,4 @@
 import { Model } from '@edb/models';
-import { Environment } from '@edb/utils';
-
-/**
- * Prepare for the worst: Symbol assigned as properties (on the Proxy)
- * may randomly return an `undefined` property value in Edge :/
- * @type {boolean}
- */
-const isEdge = Environment.browser && /Edge/.test(navigator.userAgent);
 
 export default function () {
 	/*
@@ -37,11 +29,7 @@ export default function () {
 			model[symbolkey] = 'symbol';
 			expect(model._privatekey).toBe('private');
 			expect(model.$privilegedkey).toBe('privileged');
-			if (isEdge) {
-				expect(!!'TEST DISABLED BECAUSE RANDOMLY FAILS IN EDGE :/').toBe(true);
-			} else {
-				expect(model[symbolkey]).toBe('symbol');
-			}
+			expect(model[symbolkey]).toBe('symbol');
 		});
 
 		it('should support defineProperty', () => {
@@ -89,11 +77,7 @@ export default function () {
 			const symbol = Symbol('secret');
 			const model = new MyModel();
 			model[symbol] = 23;
-			if (isEdge) {
-				expect(!!'TEST DISABLED BECAUSE RANDOMLY FAILS IN EDGE :/').toBe(true);
-			} else {
-				expect(model[symbol]).toBe(23);
-			}
+			expect(model[symbol]).toBe(23);
 			const symbols = Object.getOwnPropertySymbols(model);
 			const undef = (symbol) => model[symbol] === undefined;
 			expect(symbols.every(undef)).toBe(true);

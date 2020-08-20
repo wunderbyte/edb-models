@@ -206,7 +206,7 @@ function illegal(target, name, field) {
 /**
  * @param {Proto} target
  * @param {string} name
- * @throws {AccessError}
+ * @throws {Error}
  * @returns {boolean} false
  */
 function badset(target, name) {

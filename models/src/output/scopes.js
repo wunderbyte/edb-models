@@ -1,4 +1,4 @@
-import { Mapping } from '@edb/utils';
+import { MapSet } from '@edb/utils';
 
 /**
  * Mapping all scopes by key.
@@ -11,7 +11,7 @@ const scopes = new Map();
 /**
  * Get scope by key. If not found, a new scope will be created.
  * @param {string|Symbol} key
- * @returns {Array<Map|Mapping>}
+ * @returns {Array<Map|MapSet>}
  */
 export function getscope(key) {
 	const scope = scopes.get(key) || scopes.set(key, new Scope()).get(key);
@@ -29,7 +29,7 @@ class Scope {
 
 	/**
 	 * Tracking (set of) input handlers in this scope.
-	 * @type {Mapping<Constructor, Set<Function|InputHandler>>}
+	 * @type {MapSet<Constructor, Set<Function|InputHandler>>}
 	 */
-	handlers = new Mapping();
+	handlers = new MapSet();
 }

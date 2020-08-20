@@ -1,4 +1,4 @@
-import { Environment } from './Environment';
+import { isBrowser } from './Environment';
 
 /**
  * Schedule callback async via `requestAnimationFrame`
@@ -8,7 +8,7 @@ import { Environment } from './Environment';
  * @returns {number}
  */
 export function requestTick(cb) {
-	return Environment.browser ? requestAnimationFrame(cb) : setTimeout(cb);
+	return isBrowser ? requestAnimationFrame(cb) : setTimeout(cb);
 }
 
 /**
@@ -17,5 +17,5 @@ export function requestTick(cb) {
  */
 
 export function cancelTick(id) {
-	Environment.browser ? cancelAnimationFrame(id) : clearTimeout(id);
+	isBrowser ? cancelAnimationFrame(id) : clearTimeout(id);
 }

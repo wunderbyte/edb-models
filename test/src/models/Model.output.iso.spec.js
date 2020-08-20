@@ -1,7 +1,6 @@
 import { Model } from '@edb/models';
 
 export default function () {
-	
 	describe('edb.Model can output to connected handlers', () => {
 		it('should connect and disconnect', () => {
 			class MyModel extends Model {}
@@ -78,15 +77,15 @@ export default function () {
 		it('should return a promise when the handler is omitted', (done) => {
 			class MyModel extends Model {}
 			let mymodel1 = new MyModel();
-			MyModel.connect().then(input => {
+			MyModel.connect().then((input) => {
 				expect(input).toEqual(mymodel1);
-			})
+			});
 			mymodel1.output();
 			let mymodel2 = new MyModel();
 			mymodel2.output();
-			MyModel.connect().then(input => {
+			MyModel.connect().then((input) => {
 				expect(input).toEqual(mymodel2);
-			})
+			});
 			done();
 		});
 	});

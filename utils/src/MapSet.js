@@ -1,11 +1,10 @@
 import { chained } from './Decorators';
 
 /**
- *
+ * Some kind of Map with string keys and Set values.
  */
-export class Mapping {
-	/*
-	 * TODO: Convert to private (or symbol), see comment above
+export class MapSet {
+	/**
 	 * @type {Map<string, Set<*>>}
 	 */
 	#map = new Map();
@@ -40,8 +39,8 @@ export class Mapping {
 	 */
 	@chained
 	del(key, value) {
-		let map = this.#map;
-		let set = map.get(key);
+		const map = this.#map;
+		const set = map.get(key);
 		if (set && set.has(value)) {
 			set.delete(value);
 			if (set.size === 0) {
@@ -62,7 +61,7 @@ export class Mapping {
 	}
 
 	/**
-	 * Get set indexed by key. Returns a copy. May return null.
+	 * Get (copy of!) set indexed by key.
 	 * @param {string} key
 	 * @returns {Set<*>}
 	 */
@@ -77,31 +76,5 @@ export class Mapping {
 	@chained
 	clear() {
 		this.#map.clear();
-	}
-
-	/**
-	 * Get the map. Returns a copy.
-	 * @returns {Map<string, Set<*>>}
-	 */
-	toMap() {
-		return new Map(this.#map);
-	}
-
-	/**
-	 * Get the set indexed by key. Returns a copy. Always returns a Set.
-	 * @param {string} key
-	 * @returns {Set<*>}
-	 */
-	toSet(key) {
-		return this.has(key) ? new Set(this.#map.get(key)) : new Set();
-	}
-
-	/**
-	 * Get the set indexed by key as array. Always returns an array.
-	 * @param {string} key
-	 * @returns {Array}
-	 */
-	toArray(key) {
-		return [...this.toSet(key)];
 	}
 }
