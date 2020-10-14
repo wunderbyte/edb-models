@@ -55,11 +55,7 @@ export function done(target) {
  * @returns {*}
  */
 export function get(target, name) {
-	if (target[proxy]) {
-		return getmap(target, name).get(name);
-	} else {
-		return target[name];
-	}
+	return target[proxy] ? getmap(target, name).get(name) : target[name];
 }
 
 /**

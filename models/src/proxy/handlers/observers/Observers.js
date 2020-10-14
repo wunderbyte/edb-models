@@ -49,8 +49,9 @@ let peeking = true;
  * Observers management studio.
  */
 export default class Observers {
-	static observe() {}
-
+	/**
+	 * TODO: What is this? either implement or remove!
+	 */
 	static unobserve() {}
 
 	/**
@@ -98,7 +99,7 @@ export default class Observers {
 	 */
 	static observe(target, first, last) {
 		let set = locals.get(target);
-		let fun = typeof first === 'string' ? last : last;
+		let fun = typeof first === 'string' ? last : first;
 		let nam = typeof first === 'string' ? first : null;
 		if (observable(target)) {
 			const old = fun;

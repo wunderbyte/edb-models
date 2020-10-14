@@ -68,12 +68,15 @@ export default function () {
 		it('should support simple function callbacks as observers', (done) => {
 			let model = new MyModel({ age: 23 });
 			let works = true;
+			let poked = false;
 			const cleanup = model.observe((name, value, oldval, target) => {
+				poked = true;
 				works =
 					name === 'age' && value === 24 && oldval === 23 && target === model;
 			});
 			model.age = 24;
 			later(() => {
+				expect(poked).toBe(true);
 				expect(works).toBe(true);
 				cleanup();
 				model.age = 25;
@@ -87,13 +90,17 @@ export default function () {
 		it('should support observing single properties', (done) => {
 			let model = new MyModel({ age: 23 });
 			let works = true;
+			let poked = false;
 			const cleanup = model.observe('age', (value, oldval, target) => {
 				works = value === 24 && oldval === 23 && target === model;
+				poked = true;
 			});
 			model.name = 'Hans Jozef';
 			later(() => {
+				expect(poked).toBe(false);
 				model.age = 24;
 				later(() => {
+					expect(poked).toBe(true);
 					expect(works).toBe(true);
 					cleanup();
 					model.age = 25;
