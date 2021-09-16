@@ -74,6 +74,7 @@ export default function () {
 				works =
 					name === 'age' && value === 24 && oldval === 23 && target === model;
 			});
+			expect(poked).toBe(false); // NOT invoked immediately!
 			model.age = 24;
 			later(() => {
 				expect(poked).toBe(true);
@@ -92,22 +93,18 @@ export default function () {
 			let works = true;
 			let poked = false;
 			const cleanup = model.observe('age', (value, oldval, target) => {
+				poked = value === 23; // invoked immediately with current value
 				works = value === 24 && oldval === 23 && target === model;
-				poked = true;
 			});
-			model.name = 'Hans Jozef';
+			expect(poked).toBe(true);
+			model.age = 24;
 			later(() => {
-				expect(poked).toBe(false);
-				model.age = 24;
+				expect(works).toBe(true);
+				cleanup();
+				model.age = 25;
 				later(() => {
-					expect(poked).toBe(true);
 					expect(works).toBe(true);
-					cleanup();
-					model.age = 25;
-					later(() => {
-						expect(works).toBe(true);
-						done();
-					});
+					done();
 				});
 			});
 		});

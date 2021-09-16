@@ -98,6 +98,7 @@ export default class Observers {
 	 * @returns {Function}
 	 */
 	static observe(target, first, last) {
+		let get = (name) => getProxy(target)[name];
 		let set = locals.get(target);
 		let fun = typeof first === 'string' ? last : first;
 		let nam = typeof first === 'string' ? first : null;
@@ -112,6 +113,7 @@ export default class Observers {
 				locals.set(target, (set = new Set()));
 			}
 			set.add(fun);
+			nam && old(get(nam), undefined, target);
 			return () => {
 				set.delete(fun);
 				!set.size && locals.delete(target);
