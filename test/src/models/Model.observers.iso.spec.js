@@ -93,10 +93,10 @@ export default function () {
 			let works = true;
 			let poked = false;
 			const cleanup = model.observe('age', (value, oldval, target) => {
-				poked = value === 23; // invoked immediately with current value
+				poked = value === 23;
 				works = value === 24 && oldval === 23 && target === model;
 			});
-			expect(poked).toBe(true);
+			expect(poked).toBe(true); // invoked immediately with current value
 			model.age = 24;
 			later(() => {
 				expect(works).toBe(true);
