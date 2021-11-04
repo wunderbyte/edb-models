@@ -1,0 +1,8 @@
+{
+  "name": "@edb/output",
+  "version": "0.0.0",
+  "module": "Output.js",
+	"dependencies": {
+		"@edb/utils": "0.0.0"
+	}
+}
