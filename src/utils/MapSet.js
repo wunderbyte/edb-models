@@ -1,5 +1,3 @@
-import { chained } from './Decorators';
-
 /**
  * Some kind of Map with string keys and Set values.
  */
@@ -16,7 +14,6 @@ export class MapSet {
 	 * @param {*} value
 	 * @returns {this}
 	 */
-	@chained
 	add(key, value) {
 		const map = this.#map;
 		if (!map.has(key)) {
@@ -26,6 +23,7 @@ export class MapSet {
 		if (!set.has(value)) {
 			set.add(value);
 		}
+		return this;
 	}
 
 	/**
@@ -37,7 +35,6 @@ export class MapSet {
 	 * @param {*} value
 	 * @returns {this}
 	 */
-	@chained
 	del(key, value) {
 		const map = this.#map;
 		const set = map.get(key);
@@ -47,6 +44,7 @@ export class MapSet {
 				map.delete(key);
 			}
 		}
+		return this;
 	}
 
 	/**
@@ -73,8 +71,8 @@ export class MapSet {
 	 * Clear the map.
 	 * @returns {this}
 	 */
-	@chained
 	clear() {
 		this.#map.clear();
+		return this;
 	}
 }

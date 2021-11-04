@@ -95,11 +95,12 @@ export default class ProxyHandler {
 			: old !== val
 			? Target.isPreserved(target, name)
 				? badset(target, name)
-				: do {
+				: (function () {
+						// do expression!
 						Target.set(target, name, val, desc);
 						Observers.$poke(target, name, val, old);
-						true;
-				  }
+						return true;
+				  })()
 			: true;
 	}
 
@@ -157,12 +158,13 @@ function getaccessor(target, name) {
  */
 function getter(target, desc, name, safe) {
 	return desc.get
-		? do {
+		? (function () {
+				// do expression!
 				const pro = Target.getProxy(target);
 				const res = desc.get.call(pro);
 				Observers.$peek(target, name);
-				res;
-		  }
+				return res;
+		  })()
 		: safe
 		? undefined
 		: Access.badGetter(target, name);
@@ -179,12 +181,13 @@ function getter(target, desc, name, safe) {
  */
 function setter(target, desc, name, value) {
 	return desc.set
-		? do {
+		? (function () {
+				// do expression!
 				const oldval = getter(target, desc, name, true);
 				desc.set.call(Target.getProxy(target), value);
 				Observers.$poke(target, name, value, oldval);
-				true;
-		  }
+				return true;
+		  })()
 		: Access.badSetter(target, name);
 }
 

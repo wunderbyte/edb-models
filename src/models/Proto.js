@@ -47,9 +47,9 @@ export default function mixin(superclass = class {}) {
 		 * @param {undefined|string|Symbol} [scope]
 		 * @returns {this}
 		 */
-		@chained
 		output(scope) {
 			Output.output(this, scope);
+			return this;
 		}
 
 		/**
@@ -57,9 +57,9 @@ export default function mixin(superclass = class {}) {
 		 * @param {undefined|string|Symbol} [scope]
 		 * @returns {this}
 		 */
-		@chained
 		revoke(scope) {
 			Output.revoke(this, scope);
+			return this;
 		}
 
 		// Static ..................................................................
@@ -102,19 +102,21 @@ export default function mixin(superclass = class {}) {
 		 * @param {InputHandler|undefined} [handler]
 		 * @returns {Constructor|Promise<Proto>}
 		 */
-		@chained
 		static connect(handler) {
-			return arguments.length
-				? Output.connect(this, handler)
-				: new Promise((resolve) => {
-						Output.connect(
-							this,
-							function once(input) {
-								Output.disconnect(this, once);
-								resolve(input);
-							}.bind(this)
-						);
-				  });
+			if (arguments.length) {
+				Output.connect(this, handler);
+				return this;
+			} else {
+				return new Promise((resolve) => {
+					Output.connect(
+						this,
+						function once(input) {
+							Output.disconnect(this, once);
+							resolve(input);
+						}.bind(this)
+					);
+				});
+			}
 		}
 
 		/**
@@ -122,9 +124,9 @@ export default function mixin(superclass = class {}) {
 		 * @param {InputHandler} handler
 		 * @returns {Constructor}
 		 */
-		@chained
 		static disconnect(handler) {
 			Output.disconnect(this, handler);
+			return this;
 		}
 
 		/**

@@ -1,7 +1,7 @@
 import { getProxy } from '../target/Target';
 import Observers from './observers/Observers';
 import getArrayPipe from './pipes/ArrayPipe';
-import { ok } from './ModelHandler.js';
+import { cool } from './ModelHandler.js';
 
 /**
  * String that would resolve to integer when used in square bracket notation.
@@ -49,10 +49,11 @@ export default class CollectionHandler {
 	 * @param {string\number} name
 	 * @returns {*}
 	 */
-	@ok
 	static get(target, name) {
-		Observers.$peek(target, name);
-		return target[name];
+		if (cool(target, name)) {
+			Observers.$peek(target, name);
+			return target[name];
+		}
 	}
 
 	/**
@@ -66,16 +67,17 @@ export default class CollectionHandler {
 	 * @param {*} value
 	 * @returns {boolean}
 	 */
-	@ok
 	static set(target, name, value) {
-		Observers.$splice(target);
-		if (name === 'length') {
-			// TODO: observers when *manually* setting this: `mycol.length = 0`
-			target[name] = value;
-		} else {
-			target[name] = value !== undefined ? resolve(target, value) : value;
+		if (cool(target, name)) {
+			Observers.$splice(target);
+			if (name === 'length') {
+				// TODO: observers when *manually* setting this: `mycol.length = 0`
+				target[name] = value;
+			} else {
+				target[name] = value !== undefined ? resolve(target, value) : value;
+			}
+			return true;
 		}
-		return true;
 	}
 }
 

@@ -21,11 +21,12 @@ const pipes = new Map();
 export default function getObjectPipe(Proto) {
 	return pipes.has(Proto)
 		? pipes.get(Proto)
-		: do {
+		: (function () {
+				// do expression
 				const pipe = resolve(Proto);
 				pipes.set(Proto, pipe);
-				pipe;
-		  };
+				return pipe;
+		  })();
 }
 
 // Scoped ......................................................................
@@ -81,11 +82,12 @@ function ancestors(Proto, list = [Proto]) {
 function mapping(oldmap, Proto) {
 	return mappings.has(Proto)
 		? mappings.get(Proto)
-		: do {
+		: function () {
+				// do expression
 				const symbol = Symbol.for('@edb/objectpipe');
 				const newmap = Proto[symbol](oldmap || {});
 				mappings.set(Proto, newmap);
-				newmap;
+				return newmap;
 		  };
 }
 

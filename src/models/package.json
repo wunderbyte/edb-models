@@ -2,8 +2,8 @@
   "name": "@edb/models",
   "version": "0.0.0",
   "module": "index.js",
-	"dependencies": {
-		"@edb/proxy": "0.0.0",
-		"@edb/output": "0.0.0"
-	}
+  "dependencies": {
+    "@edb/proxy": "0.0.0",
+    "@edb/output": "0.0.0"
+  }
 }

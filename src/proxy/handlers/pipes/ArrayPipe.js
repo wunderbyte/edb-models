@@ -21,13 +21,14 @@ const pipes = new Map();
 export default function getArrayPipe(cons) {
 	return pipes.has(cons)
 		? pipes.get(cons)
-		: do {
+		: (function () {
+				// do expression
 				const name = Symbol.for('@edb/arraypipe');
 				const type = cons[name]();
 				const pipe = createpipe(cons, type);
 				pipes.set(cons, pipe);
-				pipe;
-		  };
+				return pipe;
+		  })();
 }
 
 // Scoped ......................................................................

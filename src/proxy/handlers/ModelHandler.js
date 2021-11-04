@@ -30,7 +30,7 @@ const CONFIRM_PROXY = '$CONFIRM_PROXY';
  * @param {string} name
  * @param {Object} descriptor
  * @returns {Object}
- */
+ *
 export function ok(object, name, descriptor) {
 	const base = descriptor.value;
 	descriptor.value = function (target, name) {
@@ -41,6 +41,21 @@ export function ok(object, name, descriptor) {
 		}
 	};
 	return descriptor;
+}
+*/
+
+/**
+ * Throw an exception on attempt to access destructed target.
+ * @param {Proto} target
+ * @param {string} name
+ * @returns {boolean}
+ */
+export function cool(target, name) {
+	if (name !== 'disposed' && Target.isDisposed(target)) {
+		Access.reportDestructedViolation(target.constructor.name, name);
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -64,10 +79,11 @@ export default class ModelHandler {
 	 * @param {string} name
 	 * @returns {*}
 	 */
-	@ok
 	static get(target, name) {
-		const value = special(target, name) || normal(target, name);
-		return value === undefined ? uniget(target, name) : value;
+		if (cool(target, name)) {
+			const value = special(target, name) || normal(target, name);
+			return value === undefined ? uniget(target, name) : value;
+		}
 	}
 
 	/**
@@ -77,17 +93,18 @@ export default class ModelHandler {
 	 * @param {*} value
 	 * @returns {boolean}
 	 */
-	@ok
 	static set(target, name, value) {
-		if (!uniset(target, name, value)) {
-			const val = piped(target, name, value);
-			const old = Target.get(target, name);
-			if (old !== val) {
-				Target.set(target, name, val);
-				Observers.$poke(target, name, val, old);
+		if (cool(target, name)) {
+			if (!uniset(target, name, value)) {
+				const val = piped(target, name, value);
+				const old = Target.get(target, name);
+				if (old !== val) {
+					Target.set(target, name, val);
+					Observers.$poke(target, name, val, old);
+				}
 			}
+			return true;
 		}
-		return true;
 	}
 
 	/**
@@ -95,7 +112,6 @@ export default class ModelHandler {
 	 * @param {Proto} target
 	 * @returns {Array<string>}
 	 */
-	@ok
 	static keys(target) {
 		return Target.publickeys(target);
 	}

@@ -14,10 +14,9 @@ const keys = new Set();
 export function generateKey(fix = 'key') {
 	const ran = String(Math.random());
 	const key = fix + ran.slice(2, 11);
-	return keys.has(key)
-		? this.generate()
-		: do {
-				keys.add(key);
-				key;
-		  };
+	if (keys.has(key)) {
+		return this.generate();
+	}
+	keys.add(key);
+	return key;
 }

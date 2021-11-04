@@ -1,9 +1,8 @@
-export default function () {
-	/**
-	 * TODO: Bring these functions back!
-	 */
-	describe('util.arrayutils', function likethis() {
-		/*
+/**
+ * TODO: Bring these functions back!
+ */
+describe('util.arrayutils', function likethis() {
+	/*
 		it('should remove two elements by index', () => {
 			let array = [1, 2, 3, 4, 5];
 			remove(array, 1, 2);
@@ -31,5 +30,4 @@ export default function () {
 			expect([1, 2, 3, 4].every((n, i) => array[i] === n)).toBe(true);
 		});
 		*/
-	});
-}
+});

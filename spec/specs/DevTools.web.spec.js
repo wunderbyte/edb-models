@@ -1,3 +1,4 @@
+/*
 import { Model, Collection } from '@edb/models';
 
 export default function () {
@@ -53,3 +54,4 @@ export default function () {
 		});
 	});
 }
+*/
