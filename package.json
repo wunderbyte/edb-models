@@ -1,7 +1,6 @@
 {
   "name": "edb-models",
   "version": "0.0.0",
-  "module": "dist/index.js",
   "scripts": {
     "boot": "lerna bootstrap",
     "prettier": "npm run prettier:js && npm run prettier:json",
@@ -17,11 +16,6 @@
     "test:build": "esbuild spec/input.js --format=esm --target=chrome93,firefox93,safari15 --bundle --watch --outfile=spec/output.mjs",
     "test:serve": "npx jasmine-browser-runner serve"
   },
-  "browserslist": [
-    "last 1 Firefox versions",
-    "last 1 Chrome versions",
-    "last 1 Safari versions"
-  ],
   "devDependencies": {
     "concurrently": "^6.3.0",
     "esbuild": "^0.13.8",
