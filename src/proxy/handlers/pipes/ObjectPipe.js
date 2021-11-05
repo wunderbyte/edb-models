@@ -50,13 +50,6 @@ const blank = {};
  */
 function resolve(Proto, map = ancestors(Proto).reduce(mapping)) {
 	return map === null ? map : buildpipe(Proto, map);
-	/*
-	return isnull(map)
-		? map
-		: isimap(map)
-		? buildpipe(Proto, map)
-		: failpipe(Proto, map);
-	*/
 }
 
 /**
@@ -82,13 +75,13 @@ function ancestors(Proto, list = [Proto]) {
 function mapping(oldmap, Proto) {
 	return mappings.has(Proto)
 		? mappings.get(Proto)
-		: function () {
+		: (function () {
 				// do expression
 				const symbol = Symbol.for('@edb/objectpipe');
 				const newmap = Proto[symbol](oldmap || {});
 				mappings.set(Proto, newmap);
 				return newmap;
-		  };
+		  })();
 }
 
 /**
@@ -109,20 +102,6 @@ function buildpipe(Proto, map) {
 }
 
 // Failures ....................................................................
-
-/**
- * The `static model` method returned something bad.
- * TODO: Method name 'model()' has been hardcoded!
- * @param {Constructor} Proto
- * @param {*} pipe
- * @throws {TypeError}
- *
-function failpipe(Proto, pipe) {
-	throw new TypeError(
-		`${Proto.name}.model() returned ${typeOf(pipe)}, expected IMap|Object|null`
-	);
-}
-*/
 
 /**
  * Throw that type error.

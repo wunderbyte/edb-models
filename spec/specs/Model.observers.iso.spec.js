@@ -1,4 +1,5 @@
 import { Model } from '@edb/models';
+import { later } from './helpers';
 
 describe('edb.Model can be observed', () => {
 	class MyModel extends Model {

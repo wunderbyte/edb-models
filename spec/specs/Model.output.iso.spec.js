@@ -1,4 +1,5 @@
 import { Model } from '@edb/models';
+import { later } from './helpers';
 
 describe('edb.Model can output to connected handlers', () => {
 	it('should connect and disconnect', () => {

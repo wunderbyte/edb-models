@@ -1,4 +1,5 @@
 import { Model } from '@edb/models';
+import { expecterror } from './helpers';
 // import { isImmutable } from '@edb/utils';
 
 /**
@@ -47,7 +48,7 @@ describe('edb.Model pipes provide type safety', () => {
 	});
 
 	it('should explode on bad constructor object', () => {
-		expecterror('bad assignment', () => {
+		expecterror(expect, 'bad assignment', () => {
 			new TypedModel({
 				name: Math.random(),
 			});
@@ -56,20 +57,20 @@ describe('edb.Model pipes provide type safety', () => {
 
 	it('should explode on bad assignment', () => {
 		let model = new TypedModel();
-		expecterror('bad assignment', () => {
+		expecterror(expect, 'bad assignment', () => {
 			model.object = new Array(23);
 		});
 	});
 
 	it('should explode on assignment to undeclared key', () => {
 		let model = new TypedModel();
-		expecterror('cannot assign', () => {
+		expecterror(expect, 'cannot assign', () => {
 			model.badname = 'Sauron';
 		});
 	});
 
 	it('should explode on undeclared key in constructor argument', () => {
-		expecterror('cannot assign', () => {
+		expecterror(expect, 'cannot assign', () => {
 			new TypedModel({
 				badname: 'Sauron',
 			});
@@ -78,7 +79,7 @@ describe('edb.Model pipes provide type safety', () => {
 
 	it('should explode on overwriting a normal instance method', () => {
 		let model = new TypedModel();
-		expecterror('cannot assign', () => {
+		expecterror(expect, 'cannot assign', () => {
 			model.greeting = () => 'hello there';
 		});
 	});
@@ -95,13 +96,13 @@ describe('edb.Model pipes provide type safety', () => {
 			model.multitype = primitive;
 			expect(model.multitype).toBe(primitive);
 		});
-		expecterror('bad assignment', () => {
+		expecterror(expect, 'bad assignment', () => {
 			model.multitype = [23];
 		});
 	});
 
 	it('should throw on attempt to redefine the property descriptor', () => {
-		expecterror('cannot redefine', () => {
+		expecterror(expect, 'cannot redefine', () => {
 			Reflect.defineProperty(new TypedModel(), 'name', {
 				get: function () {
 					return 'Arne';
@@ -114,7 +115,7 @@ describe('edb.Model pipes provide type safety', () => {
 describe('edb.Model pipes are inherited and can be modified', () => {
 	it('can inherit type interface from ancestor class', () => {
 		class SubModel extends TypedModel {}
-		expecterror('cannot assign', () => {
+		expecterror(expect, 'cannot assign', () => {
 			new SubModel().bonusprop = true;
 		});
 	});
@@ -258,7 +259,7 @@ describe('edb.Model pipes convert objects and arrays to Models and Collections',
 
 	it('should explode on instantiated invalid models', () => {
 		const pet = new Animal();
-		expecterror('bad assignment', () => {
+		expecterror(expect, 'bad assignment', () => {
 			new Person({ friend: pet });
 		});
 	});

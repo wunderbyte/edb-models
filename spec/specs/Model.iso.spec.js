@@ -1,4 +1,5 @@
 import { Model } from '@edb/models';
+import { expecterror } from './helpers';
 
 /*
  * Model specs.
@@ -21,7 +22,7 @@ describe('edb.Model', function likethis() {
 		const model = new MyModel({ nickname: 'Morten' });
 		expect(model.nickname).toBe('Morten');
 		model.dispose();
-		expecterror('destructed', () => {
+		expecterror(expect, 'destructed', () => {
 			console.log(model.nickname);
 		});
 	});

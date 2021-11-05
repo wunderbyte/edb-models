@@ -1,4 +1,5 @@
 import { Model } from '@edb/models';
+import { expecterror } from './helpers';
 
 /*
  * Model proxy specs.
@@ -42,6 +43,7 @@ describe('edb.Model proxy', function likethis() {
 			value: 23,
 		});
 		expecterror(
+			expect,
 			'cannot assign',
 			() => (model.readonly = 0),
 			() => {
@@ -97,7 +99,7 @@ describe('edb.Model proxy', function likethis() {
 	});
 
 	it('should disallow special keys in constructor argument', () => {
-		expecterror('not allowed', () => {
+		expecterror(expect, 'not allowed', () => {
 			let model = new MyModel({
 				_privatekey: 'a',
 				$privilegedkey: 'b',
@@ -110,7 +112,7 @@ describe('edb.Model proxy', function likethis() {
 		let model = new MyModel();
 		let fails = false;
 		expect(typeof model.$id).toBe('string');
-		expecterror('cannot assign', () => {
+		expecterror(expect, 'cannot assign', () => {
 			model.$id = 'John';
 		});
 	});
@@ -122,6 +124,7 @@ describe('edb.Model proxy', function likethis() {
 		});
 		model.CONSTANT_3 = 'readonly';
 		expecterror(
+			expect,
 			'cannot assign',
 			() => (model.CONSTANT_1 = 0),
 			() => (model.CONSTANT_2 = 0),
