@@ -1,8 +1,16 @@
-// import installdevtools from './devtools/';
+import installdevtools from '@edb/devtools';
 import { observe } from '@edb/proxy';
+import { isBrowser } from '@edb/utils';
+import Model from './Model';
+import Collection from './Collection';
 
-export { default as Model } from './Model';
-export { default as Collection } from './Collection';
+export { Model as Model };
+export { Collection as Collection };
+
+/**
+ * TODO: Not in production (via process.env.NODE_ENV)
+ */
+isBrowser && installdevtools(Model, Collection);
 
 /**
  * TODO: Expose this via static method `Model.addObserver` !!!
