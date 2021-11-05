@@ -5,10 +5,19 @@ import { join } from 'path';
 /**
  * @filedesc
  * Export modules to external directory for use in foreign project without 
- * involving NPM publishing or Git submodules. Note that since we export 
- * the raw sources only, our foreign project is now in charge of building 
- * this project with all required Babel plugins!
+ * involving NPM publishing or Git submodules. Note that our foreign project 
+ * is now in charge of *transpiling* the code for use in older user agents!
  */
+
+/**
+ * @param {string} source
+ * @returns {Array<string>} 
+ */
+function getDirectories(source) {
+	return readdirSync(source, { withFileTypes: true })
+		.filter(dirent => dirent.isDirectory())
+		.map(dirent => join(source, dirent.name));
+}
 
 /**
  * @param {string} target 
@@ -28,7 +37,8 @@ function run(target, dirs) {
  */
 function traverse(target, dirs) {
 	Promise.all(dirs.map(namepair).map(copydir(target)))
-		.then(license(target))
+		.then(copyfile('README.md', target))
+		.then(copyfile('LICENSE', target))
 		.then(success(target, dirs))
 		.catch(console.error);
 }
@@ -54,12 +64,12 @@ function copydir(target) {
 }
 
 /**
+ * @param {string} name 
  * @param {string} target 
- * @param {Array<string>} pairs 
  * @returns {Promise}
  */
-function license(target) {
-	return fsextras.copy('LICENSE', join(target + '@edb', 'LICENSE'));
+function copyfile(name, target) {
+	return fsextras.copy(name, join(target + '@edb', name));
 }
 
 /**
@@ -68,10 +78,10 @@ function license(target) {
  */
 function success(target, dirs) {
 	console.log(`${dirs.length} modules exported into ${target}`);
-	console.log('Make sure to install all required Babel plugins!')
+	console.log('May need to transpile this stuff for older browsers!');
 }
 
 /**
  * Start the whole thing.
  */
-run(process.argv[2], ['models', 'utils']);
+run(process.argv[2], getDirectories('src'));
