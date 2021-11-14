@@ -2,6 +2,7 @@ import * as ClassFormatter from './ClassFormatter';
 import * as InstanceFormatter from './InstanceFormatter';
 
 /**
+ * TODO: Don't require these arguments!s
  * @param {Class} Model 
  * @param {Class} Collection 
  * @returns {Object} Implements some kind of interface

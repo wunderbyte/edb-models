@@ -6,4 +6,4 @@
 ███████ ██████  ██████      ██      ██  ██████  ██████  ███████ ███████ ███████ 
 ```
 
-**EDB Models** docs are coming.
+Docs are in development. For now, you can check the [specs](tree/master/spec/specs) to see how it works.
